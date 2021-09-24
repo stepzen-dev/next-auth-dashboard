@@ -113,31 +113,34 @@ export async function getOwnerByEmail() {
 }
 
 export async function getOwner(email: any) {
-    
-    const data = await fetchAPI(
-      `
-      query MyQuery {
-        firebase_owner_by_email(email: "${email}") {
-          email
-          event_ids
-          id
-          name
-          events {
-            attendee_ids
+    try {
+      const data = await fetchAPI(
+        `
+        query MyQuery {
+          firebase_owner_by_email(email: "${email}") {
+            email
+            event_ids
             id
             name
-            location
-            attendees {
-              name
-              address
-              email
+            events {
+              attendee_ids
               id
-              phone
+              name
+              location
+              attendees {
+                name
+                address
+                email
+                id
+                phone
+              }
             }
           }
-        }
-      }    
-    `)
-  
-    return data?.firebase_owner_by_email
+        }    
+      `)
+    
+      return data?.firebase_owner_by_email
+    } catch (e) {
+      return e.message
+    }
 }

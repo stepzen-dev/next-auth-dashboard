@@ -4,6 +4,7 @@ import { Avatar, CssBaseline, AppBar, Toolbar, List, Typography, Divider, ListIt
 import { getOwner } from "../../components/lib/api";
 import { getSession, useSession } from 'next-auth/client';
 import Account from '../../components/dashboard/account';
+import router from 'next/router';
 
 const drawerWidth = 240;
 
@@ -55,13 +56,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Dashboard(owner) {
-  const session = useSession();
   const classes = useStyles();
   owner = owner.owner
   let attendee_count = owner.events[0].attendee_ids.filter(x => x).length;
   
+  const session = useSession();
   // console.log('session', session)
   // console.log(owner.events)
+  if (session) {
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -147,35 +149,34 @@ export default function Dashboard(owner) {
       </Grid>
       </main>
     </div>
-  );
+      )
+    } else {
+      router.push("/login");
+    }
+    return <></>;
 }
 
 export async function getServerSideProps(ctx) {
     const session = await getSession(ctx);
-    // console.log('session in server', session)
 
-    if(!session || !session.user) {
-      return{
-        props: {},
-        redirect: {
-          destination: '/login',
-          permanent: false
-        }
-      }
-    } else {
       const owner = await getOwner(session.user.email);  
-      if (!owner) {
+
+      if (!owner.name) {
+        return{
+          props: {},
+          redirect: {
+            destination: '/notauthorized',
+            permanent: false
+          }
+        }
+      } else {
         return {
-          notFound: true,
+          props: {
+            owner: owner
+          },
         };
       }
     
-      return {
-        props: {
-          owner: owner
-        },
-      };
-    }
   }
 
 Dashboard.auth = true;
