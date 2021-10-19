@@ -58,7 +58,6 @@ const useStyles = makeStyles((theme) => ({
 export default function Dashboard(owner) {
   const classes = useStyles();
   owner = owner.owner
-  let attendee_count = owner.events[0].attendee_ids.filter(x => x).length;
   
   const session = useSession();
   // console.log('session', session)
@@ -82,13 +81,14 @@ export default function Dashboard(owner) {
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Paper className={classes.paper}>
+                {owner.events.map((event, index) => (
+                  <>
         <Grid container spacing={2}>
           <Grid item>
             <ButtonBase className={classes.image}>
               <img className={classes.img} alt="complex" src="https://picsum.photos/200/300" />
             </ButtonBase>
           </Grid>
-                {owner.events.map((event, index) => (
                     <Grid item xs={12} sm container key={index}>
                             <Grid item xs container direction="column" spacing={2}>
                             <Grid item xs>
@@ -104,45 +104,40 @@ export default function Dashboard(owner) {
                             </Grid>
                             </Grid>
                             <Grid item>
-                            <Typography variant="subtitle1">Total Attendees: {attendee_count}</Typography>
+                            <Typography variant="subtitle1">Total Attendees: {event.attendees.filter(x => x).length}</Typography>
+                            {event.attendees.map((attendee, index) => (
+                            <List className={classes.inline} key={index}>
+                              <ListItem alignItems="flex-start">
+                                <ListItemAvatar>
+                                  <Avatar alt="Remy Sharp" src="https://picsum.photos/id/1027/200/300" />
+                                </ListItemAvatar>
+                                <ListItemText
+                                  primary={attendee.name}
+                                  secondary={
+                                    <React.Fragment>
+                                      <Typography
+                                        component="span"
+                                        variant="body2"
+                                        className={classes.inline}
+                                        color="textPrimary"
+                                      >
+                                        {attendee.email}
+                                      </Typography>
+                                      {` — ${attendee.address}`}
+                                    </React.Fragment>
+                                  }
+                                />
+                              </ListItem>
+                              <Divider variant="inset" component="li" />
+                            </List>
+                            ))}
                             </Grid>
                         </Grid>
+                        </Grid>
+                      <hr/>
+                  </>
                 ))}
-            </Grid>
           </Paper>
-        </Grid>
-        <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
-            <Paper>
-              <h3 className={classes.attendeelist}>Attendees</h3>
-                {owner.events[0].attendees.map((attendee, index) => (
-                <List className={classes.inline} key={index}>
-                  <ListItem alignItems="flex-start">
-                    <ListItemAvatar>
-                      <Avatar alt="Remy Sharp" src="https://picsum.photos/id/1027/200/300" />
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={attendee.name}
-                      secondary={
-                        <React.Fragment>
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            className={classes.inline}
-                            color="textPrimary"
-                          >
-                            {attendee.email}
-                          </Typography>
-                          {` — ${attendee.address}`}
-                        </React.Fragment>
-                      }
-                    />
-                  </ListItem>
-                  <Divider variant="inset" component="li" />
-                </List>
-                ))}
-              </Paper>
-            </Grid>
         </Grid>
         <Grid item xs={6} sm={3}>
         </Grid>

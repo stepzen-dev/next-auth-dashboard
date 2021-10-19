@@ -123,7 +123,6 @@ export async function getOwner(email: any) {
             id
             name
             events {
-              attendee_ids
               id
               name
               location
