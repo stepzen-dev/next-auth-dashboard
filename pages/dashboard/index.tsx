@@ -60,6 +60,8 @@ export default function Dashboard(owner) {
   owner = owner.owner
   
   const session = useSession();
+  // console.log('session', session)
+  // console.log(owner.events)
   if (session) {
   return (
     <div className={classes.root}>
