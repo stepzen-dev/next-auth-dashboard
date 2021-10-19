@@ -9,7 +9,7 @@ type Firebase_Event {
   id: String
   location: String
   name: String
-  attendee_ids: [String]
+  attendee_ids: [String]!
   """
   People that have attended an event.
   """
@@ -87,7 +87,7 @@ type Query {
   """
   Equivalent To GET /api/personList?id=$id
   """
-  person_list_by_id(id: [String]): [Firebase_Person]
+  person_list_by_id(id: [String]!): [Firebase_Person]
     @rest(endpoint: "https://graphqlbackend.ngrok.io/api/personList?")
   """
   Equivalent To GET /api/person?email=$email

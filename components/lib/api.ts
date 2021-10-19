@@ -18,7 +18,7 @@ async function fetchAPI(query: any, { variables }: APIConnection = {}) {
 
   const json = await res.json();
   if (json.errors) {
-    console.error(json.errors);
+    console.error('the error here', json.errors);
     throw new Error("Failed to fetch API");
   }
   return json.data;
@@ -123,7 +123,6 @@ export async function getOwner(email: any) {
             id
             name
             events {
-              attendee_ids
               id
               name
               location
