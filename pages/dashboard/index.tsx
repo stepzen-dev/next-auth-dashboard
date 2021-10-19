@@ -58,21 +58,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Dashboard(owner) {
   const classes = useStyles();
   owner = owner.owner
-
-  // console.log('all events', owner.events)
-  // let attendee_count = 0
-
-  // let attendees = owner.events.map(function callback(element, index, array) {
-  //   // Return value for new_array
-  //   attendee_count = element.attendees.filter(x => x).length;
-  //     return array["list"] = element.attendees;
-  // })
-
-  // console.log('attendees', attendees)
   
   const session = useSession();
-  // console.log('session', session)
-  // console.log(owner.events)
   if (session) {
   return (
     <div className={classes.root}>
